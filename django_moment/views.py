@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 from moment import (COUNTER_ALIASES, DayCounter, MonthCounter, WeekCounter,
                     YearCounter)
-from django_moment import Counter
+from .models import Counter
 
 dashboard_counter = Counter('dashboard')
 
