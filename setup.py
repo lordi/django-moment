@@ -3,7 +3,7 @@
 
 from setuptools import setup, find_packages
 
-from django_moment import __version__
+from django_moment.version import __version__
 
 
 setup(
