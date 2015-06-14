@@ -6,8 +6,10 @@ from moment import (COUNTER_ALIASES, DayCounter, MonthCounter, WeekCounter,
 from .models import Counter
 
 dashboard_counter = Counter('dashboard')
+dashboard_update_counter = Counter('dashboard_update')
 
 def counter_period_json(request, counter_name):
+    dashboard_update_counter.inc()
     response_dict = {}
     for (key, cls) in COUNTER_ALIASES.iteritems():
         counter = cls.from_date(counter_name)

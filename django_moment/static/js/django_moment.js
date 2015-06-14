@@ -3,6 +3,40 @@ var formatCount = d3.format(",.0f");
 
 var margin = {top: 10, right: 30, bottom: 30, left: 30};
 
+function update_graph(element, data) {
+    var width = $(element).width() - margin.left - margin.right,
+        height = $(element).height() - margin.top - margin.bottom;
+
+    var x = d3.scale.linear()
+        .domain([0, 1])
+        .range([0, width]);
+
+    var x = d3.time.scale.utc()
+        .domain([d3.min(data, function (d) { return new Date(d.period_start); }),
+                d3.max(data, function (d) { return new Date(d.period_end); })])
+        .range([0, width]);
+
+    var y = d3.scale.linear()
+        .domain([0, d3.max(data, function(d) { return d.count; })])
+        .range([height, 0]);
+
+    var bar = d3.select(element).select("svg").selectAll(".bar")
+        .data(data);
+
+    bar.select("text")
+        .attr("x", function (d) { return (x(new Date(d.period_end)) - x(new Date(d.period_start))) / 2; })
+        .text(function(d) { return formatCount(d.count ? d.count : 0); });
+
+    bar.select("rect")
+        .attr("x", 0)
+        .transition()
+        .attr("width", function (d) { return (x(new Date(d.period_end)) - x(new Date(d.period_start))) - 1; })
+        .attr("height", function(d) { return height - y(d.count ? d.count : 0); });
+
+    bar.transition()
+        .attr("transform", function(d) { return "translate(" + new Integer(x(new Date(d.period_start))) + "," + y(d.count ? d.count : 0) + ")"; });
+}
+
 function setup_graph(element, data) {
     var width = $(element).width() - margin.left - margin.right,
         height = $(element).height() - margin.top - margin.bottom;
@@ -37,7 +71,7 @@ function setup_graph(element, data) {
         .attr("transform", function(d) { return "translate(" + x(new Date(d.period_start)) + "," + y(d.count ? d.count : 0) + ")"; });
 
     bar.append("rect")
-        .attr("x", 1)
+        .attr("x", 0)
         .attr("width", function (d) { return (x(new Date(d.period_end)) - x(new Date(d.period_start))) - 1; })
         .attr("height", function(d) { return height - y(d.count ? d.count : 0); });
 

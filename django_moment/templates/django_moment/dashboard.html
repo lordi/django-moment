@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>2 Col Portfolio - Start Bootstrap Template</title>
+    <title>{{ counter }}</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
@@ -136,13 +136,27 @@ body {
     <script>
 
     $(function () {
+
         d3.json('/moment/{{ counter }}/period.json', function (data) {
             setup_graph('#hourly', data['hour']);
             setup_graph('#daily', data['day']);
             setup_graph('#weekly', data['week']);
             setup_graph('#monthly', data['month']);
             setup_graph('#yearly', data['year']);
+
+            var update = function () {
+                d3.json('/moment/{{ counter }}/period.json', function (data) {
+                    update_graph('#hourly', data['hour']);
+                    update_graph('#daily', data['day']);
+                    update_graph('#weekly', data['week']);
+                    update_graph('#monthly', data['month']);
+                    update_graph('#yearly', data['year']);
+                });
+                setTimeout(update, 4000);
+            }
+            update();
         });
+
     });
 
 </script>
