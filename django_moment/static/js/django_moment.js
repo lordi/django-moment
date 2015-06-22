@@ -90,6 +90,9 @@ function setup_graph(element, data) {
 }
 
 function setup_event_graph(element, data, obj_name) {
+
+    $(element).height(100);
+
     var width = $(element).width() - margin.left - margin.right,
         height = $(element).height() - margin.top - margin.bottom;
 
@@ -118,21 +121,26 @@ function setup_event_graph(element, data, obj_name) {
         .attr("class", "bar")
         .attr("transform", function(d) { return "translate(" + x(new Date(d.period_start)) + ",0)"; });
 
+    var bwidth = function (d) { return (x(new Date(d.period_end)) - x(new Date(d.period_start))) };
+
     var rect_margin = 5;
-    bar.append("rect")
-        .attr("x", rect_margin)
-        .attr("y", rect_margin)
-        .attr("width", function (d) { return (x(new Date(d.period_end)) - x(new Date(d.period_start))) - rect_margin; })
-        .attr("height", function (d) { return (x(new Date(d.period_end)) - x(new Date(d.period_start))) - rect_margin; });
+    bar.append("circle")
+        .attr("cx", 0)
+        .attr("cy", function (d) { return bwidth(d) / 2.0 + rect_margin; })
+        .attr("r", function (d) { return bwidth(d) / (6.0) - rect_margin * 2.0; })
+        .transition(10.0)
+        //.delay(function (d) { return x(d.period_start) / 10.0; })
+        .attr("r", function (d) { return bwidth(d) / (d[obj_name] ? 2.0 : 3.5) - rect_margin * 2.0; })
+        //.attr("height", function (d) { return (x(new Date(d.period_end)) - x(new Date(d.period_start))) - rect_margin; });
         //.attr("height", function(d) { return 100 - rect_margin }); // d[obj_name] ? 100 : 200 });
 
-    bar.append("text")
+    /*bar.append("text")
         .attr("dy", ".75em")
         .attr("y", 6)
         .attr("x", function (d) { return (x(new Date(d.period_end)) - x(new Date(d.period_start))) / 2; })
         .attr("text-anchor", "middle")
         .text(function(d) { return d[obj_name]; });
-
+    */
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
