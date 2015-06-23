@@ -1,3 +1,5 @@
+from django.core.urlresolvers import reverse
+
 from moment import (COUNTER_ALIASES, EVENT_ALIASES, record_events,
                     update_counters)
 
@@ -15,6 +17,10 @@ class Counter(object):
     def get(self, ctype='day'):
         cls = COUNTER_ALIASES.get(ctype)
 
+    def get_absolute_url(self):
+        return reverse('django_moment.views.counter_dashboard',
+                kwargs=dict(counter_name=self.name))
+
 
 class Event(object):
     def __init__(self, name, sequence, ctypes=ALL_EVENT_TYPES):
@@ -24,3 +30,7 @@ class Event(object):
 
     def record(self, whom):
         record_events(whom, self.name, sequence=self.sequence)
+
+    def get_absolute_url(self):
+        return reverse('django_moment.views.event_dashboard',
+                kwargs=dict(event_name=self.name))

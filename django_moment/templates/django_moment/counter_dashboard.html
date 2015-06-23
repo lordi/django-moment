@@ -1,62 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-{% load staticfiles %}
+{% extends "django_moment/base.html" %}
 
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>{{ counter }}</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="{% static "css/2-col-portfolio.css" %}" rel="stylesheet">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-<style>
-
-body {
-  font: 11px sans-serif;
-}
-
-.bar rect {
-  fill: steelblue;
-  shape-rendering: crispEdges;
-}
-
-.bar text {
-  fill: #0ff;
-}
-
-.axis path, .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.graph {
-    height: 218px;
-}
-
-</style>
-</head>
-
-<body>
-    <!-- Page Content -->
-    <div class="container">
-
+{% block "content" %}
         <!-- Page Header -->
         <div class="row">
             <div class="col-lg-12">
@@ -121,23 +65,13 @@ body {
     </div>
     <!-- /.container -->
 
-    <!-- jQuery -->
-    <script src="{% static "js/jquery.js" %}"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
-
-    <!-- d3 -->
-    <script src="{% static "js/d3.min.js" %}"></script>
-
-    <!-- django_moment -->
-    <script src="{% static "js/django_moment.js" %}"></script>
 
     <script>
 
     $(function () {
 
-        d3.json('/moment/{{ counter }}/period.json', function (data) {
+        var url = '{% url 'django_moment.views.counter_period_json' counter_name=counter %}';
+        d3.json(url, function (data) {
             setup_graph('#hourly', data['hour']);
             setup_graph('#daily', data['day']);
             setup_graph('#weekly', data['week']);
@@ -145,7 +79,7 @@ body {
             setup_graph('#yearly', data['year']);
 
             var update = function () {
-                d3.json('/moment/{{ counter }}/period.json', function (data) {
+                d3.json(url, function (data) {
                     update_graph('#hourly', data['hour']);
                     update_graph('#daily', data['day']);
                     update_graph('#weekly', data['week']);
@@ -160,7 +94,4 @@ body {
     });
 
 </script>
-
-</body>
-
-</html>
+{% endblock %}
