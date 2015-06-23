@@ -17,27 +17,28 @@ Create a ``analytics.py`` in your project with all the events and counters:
 ```python
 from django_moment.models import Counter, Event
 
-something_happened = Counter('something_happened')
+visitors = Counter('visitors')
 user_online_event = Event('user_online', sequence='users')
 ```
 
 Everywhere you want to increase the counter or record the occurance of an event, do this:
 
 ```python
-from myapp.analytics import something_happened, user_online_event
+from myapp.analytics import visitors, user_online_event
 
-something_happened.inc()
+visitors.inc()
 user_online_event.record([user_id])
 ```
 
-## Analytics page
+### Analytics page
 
 Extend the ``analytics.py``:
 
 ```python
 from django_moment.site import MomentSite
+
 moment_site = MomentSite()
-moment_site.register(something_happened)
+moment_site.register(visitors)
 moment_site.register(user_online_event)
 ```
 
