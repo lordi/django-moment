@@ -1,5 +1,7 @@
 from django.conf.urls import url
 
+from django_moment.urls import urlpatterns
+
 from .models import Counter, Event
 from .views import SummaryView
 
@@ -24,7 +26,7 @@ class MomentSite (object):
                     "Counter or django_moment.models.Event as the first " + \
                     "argument to this function.")
 
-    def urlpatterns(self):
-        return [
-                url('/$', SummaryView.as_view(site=self)),
+    def urls(self):
+        return urlpatterns + [
+                url(r'^$', SummaryView.as_view(site=self)),
             ]

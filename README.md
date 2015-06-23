@@ -37,15 +37,17 @@ Extend the ``analytics.py``:
 ```python
 from django_moment.site import MomentSite
 
-moment_site = MomentSite()
-moment_site.register(visitors)
-moment_site.register(user_online_event)
+analytics_site = MomentSite()
+analytics_site.register(visitors)
+analytics_site.register(user_online_event)
 ```
 
 In your ``urls.py``:
 
 ```python
-from myapp.analytics import moment_site
+from myapp.analytics import analytics_site
 
-urlpatterns += moment_site.urlpatterns()
+urlpatterns += patterns('',
+    url(r'^analytics/', include(analytics_site.urls()))
+)
 ```
