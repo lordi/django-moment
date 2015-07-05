@@ -16,6 +16,8 @@ class Counter(object):
 
     def get(self, ctype='day'):
         cls = COUNTER_ALIASES.get(ctype)
+        today = cls.from_date(self.name)
+        return today.items()[0][1]
 
     def get_absolute_url(self):
         return reverse('django_moment.views.counter_dashboard',

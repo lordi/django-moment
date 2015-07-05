@@ -7,8 +7,9 @@ from .views import SummaryView
 
 
 class MomentSite (object):
-    counters = {}
-    events = {}
+    def __init__(self):
+        self.counters = {}
+        self.events = {}
 
     def register_counter(self, counter):
         self.counters[counter.name] = counter
