@@ -1,5 +1,7 @@
 # django-moment
-Django real-time analytics powered by redis-moment
+Django real-time analytics powered by [redis-moment](https://github.com/caxap/redis-moment)
+
+**Warning**: django-moment is work in progress and not in a usable state yet.
 
 ## Installation
 TODO
